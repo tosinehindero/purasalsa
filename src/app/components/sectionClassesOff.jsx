@@ -17,8 +17,8 @@ const SectionClassesOff = () => {
                <Image
                   src="/1.png"
                   alt="dancer1 logo"
-                  width={200}
-                  height={200}
+                  width={250}
+                  height={250}
                   priority
                   className="mx-auto rounded-xl shadow-2xl" // Remove any additional margin
                />
@@ -27,8 +27,8 @@ const SectionClassesOff = () => {
                <Image
                   src="/2.png"
                   alt="dancer2 logo"
-                  width={200}
-                  height={200}
+                  width={250}
+                  height={250}
                   priority
                   className="mx-auto rounded-xl shadow-2xl" // Remove any additional margin
                />
@@ -37,8 +37,8 @@ const SectionClassesOff = () => {
                <Image
                   src="/3.png"
                   alt="dancer3 logo"
-                  width={200}
-                  height={200}
+                  width={250}
+                  height={250}
                   priority
                   className="mx-auto rounded-xl shadow-2xl" // Remove any additional margin
                />
@@ -49,8 +49,8 @@ const SectionClassesOff = () => {
                <Image
                   src="/4.png"
                   alt="dancer4 logo"
-                  width={200}
-                  height={200}
+                  width={250}
+                  height={250}
                   priority
                   className="mx-auto rounded-xl shadow-2xl" // Remove any additional margin
                />
@@ -59,8 +59,8 @@ const SectionClassesOff = () => {
                <Image
                   src="/5.png"
                   alt="dancer5 logo"
-                  width={200}
-                  height={200}
+                  width={250}
+                  height={250}
                   priority
                   className="mx-auto rounded-xl shadow-2xl" // Remove any additional margin
                />
@@ -69,8 +69,8 @@ const SectionClassesOff = () => {
                <Image
                   src="/6.png"
                   alt="dancer6 logo"
-                  width={200}
-                  height={200}
+                  width={250}
+                  height={250}
                   priority
                   className="mx-auto rounded-xl shadow-2xl" // Remove any additional margin
                />
