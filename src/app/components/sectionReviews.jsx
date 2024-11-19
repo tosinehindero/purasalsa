@@ -4,7 +4,7 @@ import Image from "next/image";
 const SectionReviews = () => {
    return (
       <section id="reviews" className="">
-        <h1 className="text-gray-500 text-center text-xl mt-4 p-2 md:text-4xl">Testimonials</h1>
+        <h1 className="font-parisienne text-gray-500 text-center text-5xl mt-4 p-2 md:text-7xl">Testimonials</h1>
          <div className="mx-auto max-w-7xl p-2 md:p-10">
             <div className="grid gap-6 grid-cols-1 md:grid-cols-4 md:grid-row-2">
                <div className="p-10 rounded-xl bg-white border-2 border-gray text-gray-500 md:col-span-2">
@@ -53,7 +53,7 @@ const SectionReviews = () => {
                <div className="hidden p-10 rounded-xl bg-orange-500 border-2 text-white md:block md:row-span-2">
                   <div className="flex space-x-4">
                      <Image
-                        src="/profilepic3.png"
+                        src=""
                         alt="profile picture"
                         width={70}
                         height={70}
@@ -78,7 +78,7 @@ const SectionReviews = () => {
                <div className="p-10 rounded-xl bg-gray-500 border-2 text-white">
                   <div className="flex space-x-4">
                      <Image
-                        src="/profilepic4.jpg"
+                        src=""
                         alt="profile picture"
                         width={70}
                         height={70}
