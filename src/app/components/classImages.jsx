@@ -1,7 +1,14 @@
+import { videoUrl1, videoUrl2, videoUrl3, imageUrl1, imageUrl2, imageUrl3,imageUrl4,imageUrl5,imageUrl6 } from "./mediaUrls";
+
+
+
+
+
 const imagesData = [
+   
    {
-      src: "", // Thumbnail image
-      mediaSrc: "salsadancercouple.mp4", // Video file
+      src:imageUrl1, // Thumbnail image
+      mediaSrc:videoUrl1, // Video file
       isVideo: true,
       alt: "Salsa",
       origin:
@@ -11,7 +18,7 @@ const imagesData = [
       music: "Salsa music is a mix of various Latin styles, blending Cuban son, jazz, and Afro-Caribbean rhythms. Instruments include trumpets, congas, timbales, and piano.",
    },
    {
-      src: "",
+      src: imageUrl2,
       mediaSrc: "salsadancercouple.mp4",
       isVideo: true,
       alt: "Bomba",
@@ -22,7 +29,7 @@ const imagesData = [
       music: "It features large drums called barriles and is often accompanied by maracas and the cuá (sticks). The rhythm is central, and the songs are call-and-response.",
    },
    {
-      src: "",
+      src: imageUrl3,
       mediaSrc: "salsadancercouple.mp4",
       isVideo: true,
       alt: "Plena",
@@ -33,8 +40,8 @@ const imagesData = [
       music: "The primary instruments include the panderos (hand drums), güiro (scraped gourd), and other percussion instruments. The music is usually fast-paced with a repetitive rhythm.",
    },
    {
-      src: "",
-      mediaSrc: "chachachadancingcpl.mp4",
+      src: imageUrl4,
+      mediaSrc: videoUrl2,
       isVideo: true,
       alt: "Cha-Cha-Cha",
       origin:
@@ -44,7 +51,7 @@ const imagesData = [
       music: "Cha-Cha-Cha music has a distinctive rhythm created by the Cuban percussion instruments and brass sections, often accompanied by vocals.",
    },
    {
-      src: "",
+      src: imageUrl5,
       mediaSrc: "salsadancercouple.mp4",
       isVideo: true,
       alt: "Merengue",
@@ -55,8 +62,8 @@ const imagesData = [
       music: "The music is upbeat and driven by drums, horns, and the accordion, making it a lively choice for social dancing.",
    },
    {
-      src: "",
-      mediaSrc: "bachatadancingcouple.mp4",
+      src: imageUrl6,
+      mediaSrc: videoUrl3,
       isVideo: true,
       alt: "Bachata",
       origin:

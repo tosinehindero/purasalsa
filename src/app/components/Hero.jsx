@@ -3,6 +3,18 @@ import Image from "next/image";
 import Link from "next/link";
 
 const Hero = () => {
+
+  const videoUrl =
+  process.env.NEXT_PUBLIC_S3_BASE_URL
+    ? `${process.env.NEXT_PUBLIC_S3_BASE_URL}/herobackgroundbeach.mp4`
+    : "/herobackgroundbeach.mp4";
+
+const imageUrl =
+  process.env.NEXT_PUBLIC_S3_BASE_URL
+    ? `${process.env.NEXT_PUBLIC_S3_BASE_URL}/PURASALSA(3).png`
+    : "/PURASALSA(3).png";
+
+
   return (
     <section className="relative h-screen overflow-hidden">
       {/* Video Background */}
@@ -13,15 +25,15 @@ const Hero = () => {
         playsInline
         className="absolute top-0 left-0 w-full h-full object-cover z-10"
       >
-        <source src="/herovideo.mp4" type="video/mp4" />
+        <source src={videoUrl} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
       {/* Overlay Content */}
       <div className="relative z-20 flex flex-col items-center justify-center h-full text-white bg-black bg-opacity-55 space-y-1">
         <Image
-          src="/PURASALSAred2.svg"
-          alt="Purasalsa Logo"
+          src={imageUrl}
+          alt="Dynamic or Placeholder"
           width={300}
           height={300}
           priority

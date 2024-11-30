@@ -1,10 +1,16 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Intro() {
+
+   const imageUrl =
+   process.env.NEXT_PUBLIC_S3_BASE_URL
+     ? `${process.env.NEXT_PUBLIC_S3_BASE_URL}/PURASALSA (3).png`
+     : "/introdancer.jpg";
+
+
    const [isInView, setIsInView] = useState(false);
    const sectionRef = useRef(null);
 
@@ -87,7 +93,7 @@ export default function Intro() {
             }`}
          >
             <Image
-               src=""
+               src={imageUrl}
                alt="dancer"
                width={400}
                height={300}
