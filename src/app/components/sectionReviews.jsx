@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import {imageUrl7,imageUrl8,imageUrl9,imageUrl10,imageUrl11} from "./mediaUrls";
 
 const SectionReviews = () => {
    return (
@@ -10,7 +11,7 @@ const SectionReviews = () => {
                <div className="p-10 rounded-xl bg-white border-2 border-gray text-gray-500 md:col-span-2">
                   <div className="flex space-x-4 ">
                      <Image
-                        src="/redprofile.svg"
+                        src={imageUrl9}
                         alt="profile picture"
                         width={70}
                         height={70}
@@ -32,7 +33,7 @@ const SectionReviews = () => {
                <div className="p-10 rounded-xl bg-custom-bluegreen border-2 border-orange text-white">
                   <div className="flex space-x-4">
                      <Image
-                        src="/blueprofilepic.svg"
+                        src={imageUrl7}
                         alt="profile picture"
                         width={70}
                         height={70}
@@ -53,7 +54,7 @@ const SectionReviews = () => {
                <div className="hidden p-10 rounded-xl bg-orange-500 border-2 text-white md:block md:row-span-2">
                   <div className="flex space-x-4">
                      <Image
-                        src=""
+                        src={imageUrl7}
                         alt="profile picture"
                         width={70}
                         height={70}
@@ -78,7 +79,7 @@ const SectionReviews = () => {
                <div className="p-10 rounded-xl bg-gray-500 border-2 text-white">
                   <div className="flex space-x-4">
                      <Image
-                        src=""
+                        src={imageUrl8}
                         alt="profile picture"
                         width={70}
                         height={70}
@@ -99,7 +100,7 @@ const SectionReviews = () => {
                <div className="p-10 rounded-xl bg-black border-2 text-white md:col-span-2">
                   <div className="flex space-x-4 ">
                      <Image
-                        src="/blackpropic.svg"
+                        src={imageUrl10}
                         alt="profile picture"
                         width={70}
                         height={70}
@@ -120,7 +121,7 @@ const SectionReviews = () => {
                <div className="p-10 rounded-xl bg-orange-500 border-2 text-white md:hidden">
                   <div className="flex space-x-4">
                      <Image
-                        src="/profilepic3.png"
+                        src={imageUrl11}
                         alt="profile picture"
                         width={70}
                         height={70}

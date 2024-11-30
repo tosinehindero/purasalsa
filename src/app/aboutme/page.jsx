@@ -1,4 +1,5 @@
 import Image from "next/image";
+import {imageUrl12} from "../components/mediaUrls";
 
 const aboutPage = () => {
    return (
@@ -10,7 +11,7 @@ const aboutPage = () => {
             {/* image-column */}
             <div className="animate-slideInLeft rounded-2xl mx-auto md:ml-16 md:w-3/4 ">
                <Image
-                  src=""
+                  src={imageUrl12}
                   alt="dancer"
                   width={400}
                   height={400}
