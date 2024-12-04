@@ -19,7 +19,7 @@ const imagesData = [
    },
    {
       src: imageUrl2,
-      mediaSrc: "salsadancercouple.mp4",
+      mediaSrc:videoUrl1,
       isVideo: true,
       alt: "Bomba",
       origin:
@@ -30,7 +30,7 @@ const imagesData = [
    },
    {
       src: imageUrl3,
-      mediaSrc: "salsadancercouple.mp4",
+      mediaSrc:videoUrl1,
       isVideo: true,
       alt: "Plena",
       origin:
@@ -52,7 +52,7 @@ const imagesData = [
    },
    {
       src: imageUrl5,
-      mediaSrc: "salsadancercouple.mp4",
+      mediaSrc:videoUrl1,
       isVideo: true,
       alt: "Merengue",
       origin:

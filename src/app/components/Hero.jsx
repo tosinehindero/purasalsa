@@ -6,12 +6,12 @@ const Hero = () => {
 
   const videoUrl =
   process.env.NEXT_PUBLIC_S3_BASE_URL
-    ? `${process.env.NEXT_PUBLIC_S3_BASE_URL}/herobackgroundbeach.mp4`
+    ? `${process.env.NEXT_PUBLIC_S3_BASE_URL}/hero-video/herobackgroundbeach.mp4`
     : "/herobackgroundbeach.mp4";
 
 const imageUrl =
   process.env.NEXT_PUBLIC_S3_BASE_URL
-    ? `${process.env.NEXT_PUBLIC_S3_BASE_URL}/PURASALSA(3).png`
+    ? `${process.env.NEXT_PUBLIC_S3_BASE_URL}/images/orangeheel.png`
     : "/PURASALSA(3).png";
 
 
