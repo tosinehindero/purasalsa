@@ -1,8 +1,7 @@
-"use client"
+"use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-
 
 export default function ClassesAndWorkshops() {
   const [classes, setClasses] = useState([]);
@@ -40,30 +39,23 @@ export default function ClassesAndWorkshops() {
           />
         ))}
       </section>
-
-      {/* Call-to-Action Section */}
-      <section className="bg-gradient-to-r from-white to-custom-bluegreen text-gray-600 py-12 text-center px-6 md:px-16">
-        <h2 className="text-3xl md:text-4xl font-semibold mb-4">Ready to Join?</h2>
-        <p className="text-lg mb-8 max-w-2xl mx-auto">
-          Whether you&apos;re a beginner or an advanced dancer, we have classes and workshops tailored for you. Step onto the dance floor and let’s move!
-        </p>
-        <Link href="/contactme">
-          <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-8 rounded-lg">
-            Sign Up Today
-          </button>
-        </Link>
-      </section>
     </div>
   );
 }
 
 // Reusable Class Card Component
 function ClassCard({ title, image, description, duration }) {
+  const contactLink = `/contactme?title=${encodeURIComponent(
+    title
+  )}&description=${encodeURIComponent(
+    description
+  )}&duration=${encodeURIComponent(duration)}`;
+
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden">
       {image ? (
         <Image
-          src={image} // Dynamic image URL from S3
+          src={image}
           alt={`${title} image`}
           width={500}
           height={300}
@@ -77,11 +69,16 @@ function ClassCard({ title, image, description, duration }) {
       <div className="p-6">
         <h3 className="text-2xl font-semibold mb-2">{title}</h3>
         <p className="text-gray-600 mb-4">{description}</p>
-        <p className="text-sm text-gray-500">Duration: {duration}</p>
+        <p className="text-sm text-gray-500 mb-4">Duration: {duration}</p>
+        <Link href={contactLink}>
+          <button className="bg-orange-500 hover:bg-green-700 text-white py-2 px-4 rounded-lg">
+            Select Class
+          </button>
+        </Link>
       </div>
     </div>
   );
 }
 
 
-// classesandworkshop
+

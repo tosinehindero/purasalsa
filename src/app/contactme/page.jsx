@@ -1,16 +1,33 @@
-"use client"
-import React, { useState } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    subject: "",
+    subject: "Inquiry about a class or workshop", // Default subject
     message: "",
   });
 
-  // Add status state for success/error messages
+  // Status state for success/error messages
   const [status, setStatus] = useState("");
+
+  // Prefill the message with class details from query parameters
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const title = params.get("title");
+    const description = params.get("description");
+    const duration = params.get("duration");
+
+    if (title || description || duration) {
+      setFormData((prevData) => ({
+        ...prevData,
+        message: `Class Title: ${title || ""}\nDescription: ${
+          description || ""
+        }\nDuration: ${duration || ""}\n\nPlease provide additional details or questions here.`,
+      }));
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,7 +52,12 @@ const ContactForm = () => {
 
       if (response.ok) {
         setStatus("Message sent successfully!");
-        setFormData({ name: "", email: "", subject: "", message: "" });
+        setFormData({
+          name: "",
+          email: "",
+          subject: "Inquiry about a class or workshop",
+          message: "",
+        });
       } else {
         setStatus("Failed to send message.");
       }
@@ -51,10 +73,16 @@ const ContactForm = () => {
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full space-y-6"
       >
-        <h2 className="text-2xl font-bold text-center text-gray-800">Contact Me</h2>
-        
-        {status && <p className="text-center text-sm text-green-500">{status}</p>}
-        
+        <h2 className="text-2xl font-bold text-center text-gray-800">
+          Contact Me
+        </h2>
+
+        {status && (
+          <p className={`text-center text-sm ${status.includes("successfully") ? "text-green-500" : "text-red-500"}`}>
+            {status}
+          </p>
+        )}
+
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700">
             Name
@@ -127,4 +155,5 @@ const ContactForm = () => {
 };
 
 export default ContactForm;
+
 
