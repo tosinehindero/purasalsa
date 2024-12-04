@@ -1,4 +1,4 @@
-// ClassesAndWorkshops.jsx
+// ClassesAndWorkshops.jsx form
 import { useState, useEffect } from "react";
 
 function ClassesAndWorkshops() {

@@ -1,87 +1,112 @@
-import { MongoClient, ObjectId } from "mongodb";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { ObjectId } from "mongodb";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
+import s3 from "../../utils/awsS3"; // Ensure this path is correct
+import connectMongoDB from "../../utils/mongo"; // Ensure this path is correct
 
+// S3 and MongoDB Configurations
 const S3_BUCKET = process.env.NEXT_PUBLIC_S3_BUCKET;
 const REGION = process.env.AWS_REGION;
 
-const s3 = new S3Client({
-  region: REGION,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  },
-});
-
-const mongoUri = process.env.MONGO_URI;
-const client = new MongoClient(mongoUri);
-
-async function connectMongoDB() {
-  if (!client.isConnected()) await client.connect();
-  return client.db("classesDB").collection("classes");
-}
-
 // GET: Fetch all classes
 export async function GET() {
-  const collection = await connectMongoDB();
-  const classes = await collection.find({}).toArray();
-  return NextResponse.json(classes);
+  try {
+    const classesCollection = await connectMongoDB("classesDB", "classes"); // Use the correct database and collection
+    const classes = await classesCollection.find({}).toArray();
+
+    if (!classes || classes.length === 0) {
+      return NextResponse.json({ message: "No classes found" }, { status: 404 });
+    }
+
+    return NextResponse.json(classes);
+  } catch (error) {
+    console.error("Error fetching classes:", error.message);
+    return NextResponse.json(
+      { error: "Failed to fetch classes", details: error.message },
+      { status: 500 }
+    );
+  }
 }
 
 // POST: Add a new class
 export async function POST(req) {
-  const collection = await connectMongoDB();
+  try {
+    const classesCollection = await connectMongoDB("classesDB", "classes");
 
-  // Parse FormData from request
-  const formData = await req.formData();
-  const title = formData.get("title");
-  const description = formData.get("description");
-  const duration = formData.get("duration");
-  const image = formData.get("image");
+    // Parse FormData from request
+    const formData = await req.formData();
+    const title = formData.get("title");
+    const description = formData.get("description");
+    const duration = formData.get("duration");
+    const image = formData.get("image");
 
-  if (!title || !description || !duration || !image) {
-    return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    if (!title || !description || !duration || !image) {
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
+    }
+
+    // Upload image to S3
+    const imageBuffer = await image.arrayBuffer();
+    const fileName = `classes/${Date.now()}_${image.name}`;
+    const s3Command = new PutObjectCommand({
+      Bucket: S3_BUCKET,
+      Key: fileName,
+      Body: Buffer.from(imageBuffer),
+      ContentType: image.type, // Keep this for proper MIME type handling
+    });
+
+    await s3.send(s3Command);
+
+    // Get public S3 URL
+    const imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/${fileName}`;
+
+    // Save class details to MongoDB
+    const classDetails = {
+      title,
+      description,
+      duration,
+      image: imageUrl,
+    };
+
+    await classesCollection.insertOne(classDetails);
+
+    return NextResponse.json(
+      { message: "Class added successfully", classDetails },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error("Error adding class:", error);
+    return NextResponse.json(
+      { error: "Failed to process request", details: error.message },
+      { status: 500 }
+    );
   }
-
-  // Upload image to S3
-  const imageBuffer = await image.arrayBuffer();
-  const fileName = `classes/${Date.now()}_${image.name}`;
-  const s3Command = new PutObjectCommand({
-    Bucket: S3_BUCKET,
-    Key: fileName,
-    Body: Buffer.from(imageBuffer),
-    ContentType: image.type,
-    ACL: "public-read",
-  });
-
-  await s3.send(s3Command);
-
-  // Get public S3 URL
-  const imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/${fileName}`;
-
-  // Save class details to MongoDB
-  const classDetails = {
-    title,
-    description,
-    duration,
-    image: imageUrl,
-  };
-
-  await collection.insertOne(classDetails);
-
-  return NextResponse.json({ message: "Class added successfully", classDetails }, { status: 201 });
 }
+
 
 // DELETE: Remove a class
 export async function DELETE(req) {
-  const collection = await connectMongoDB();
-  const { id } = await req.json();
+  try {
+    const classesCollection = await connectMongoDB("classesDB", "classes");
+    const { id } = await req.json();
 
-  if (!id) {
-    return NextResponse.json({ error: "Missing class ID" }, { status: 400 });
+    if (!id) {
+      return NextResponse.json(
+        { error: "Missing class ID" },
+        { status: 400 }
+      );
+    }
+
+    await classesCollection.deleteOne({ _id: new ObjectId(id) });
+    return NextResponse.json({ message: "Class deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting class:", error);
+    return NextResponse.json(
+      { error: "Failed to delete class", details: error.message },
+      { status: 500 }
+    );
   }
-
-  await collection.deleteOne({ _id: new ObjectId(id) });
-  return NextResponse.json({ message: "Class deleted successfully" });
 }
 

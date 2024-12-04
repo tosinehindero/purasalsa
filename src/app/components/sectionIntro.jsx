@@ -7,7 +7,7 @@ export default function Intro() {
 
    const imageUrl =
    process.env.NEXT_PUBLIC_S3_BASE_URL
-     ? `${process.env.NEXT_PUBLIC_S3_BASE_URL}/PURASALSA (3).png`
+     ? `${process.env.NEXT_PUBLIC_S3_BASE_URL}/images/introdancer.jpg`
      : "/introdancer.jpg";
 
 
