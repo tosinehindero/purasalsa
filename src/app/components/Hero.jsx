@@ -11,7 +11,7 @@ const Hero = () => {
 
 const imageUrl =
   process.env.NEXT_PUBLIC_S3_BASE_URL
-    ? `${process.env.NEXT_PUBLIC_S3_BASE_URL}/images/orangeheel.png`
+    ? `${process.env.NEXT_PUBLIC_S3_BASE_URL}/images/Purasalsa-Shoe.png`
     : "/PURASALSA(3).png";
 
 

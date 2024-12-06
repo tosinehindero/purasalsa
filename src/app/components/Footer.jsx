@@ -11,7 +11,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:justify-between">
         {/* Logo / Brand */}
         <div className="mb-6 md:mb-0">
-          <h2 className="text-2xl font-bold">Purasalsa MargieColon</h2>
+          <h2 className="text-2xl font-bold">Purasalsa Margie Colon</h2>
           <p className="mt-2 text-gray-300 text-sm">
             Dance. Connect. Learn. Discover the joy of dance with our expert-led classes.
           </p>

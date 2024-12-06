@@ -11,14 +11,15 @@ const REGION = process.env.AWS_REGION;
 // GET: Fetch all classes
 export async function GET() {
   try {
-    const classesCollection = await connectMongoDB("classesDB", "classes"); // Use the correct database and collection
+    const classesCollection = await connectMongoDB("classesDB", "classes");
     const classes = await classesCollection.find({}).toArray();
 
-    if (!classes || classes.length === 0) {
-      return NextResponse.json({ message: "No classes found" }, { status: 404 });
-    }
+    const transformedClasses = classes.map((cls) => ({
+      ...cls,
+      _id: cls._id.toString(), // Ensure ObjectId is converted to string
+    }));
 
-    return NextResponse.json(classes);
+    return NextResponse.json(transformedClasses, { status: 200 });
   } catch (error) {
     console.error("Error fetching classes:", error.message);
     return NextResponse.json(
@@ -33,7 +34,6 @@ export async function POST(req) {
   try {
     const classesCollection = await connectMongoDB("classesDB", "classes");
 
-    // Parse FormData from request
     const formData = await req.formData();
     const title = formData.get("title");
     const description = formData.get("description");
@@ -54,7 +54,7 @@ export async function POST(req) {
       Bucket: S3_BUCKET,
       Key: fileName,
       Body: Buffer.from(imageBuffer),
-      ContentType: image.type, // Keep this for proper MIME type handling
+      ContentType: image.type,
     });
 
     await s3.send(s3Command);
@@ -62,14 +62,7 @@ export async function POST(req) {
     // Get public S3 URL
     const imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/${fileName}`;
 
-    // Save class details to MongoDB
-    const classDetails = {
-      title,
-      description,
-      duration,
-      image: imageUrl,
-    };
-
+    const classDetails = { title, description, duration, image: imageUrl };
     await classesCollection.insertOne(classDetails);
 
     return NextResponse.json(
@@ -77,14 +70,13 @@ export async function POST(req) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Error adding class:", error);
+    console.error("Error adding class:", error.message);
     return NextResponse.json(
       { error: "Failed to process request", details: error.message },
       { status: 500 }
     );
   }
 }
-
 
 // DELETE: Remove a class
 export async function DELETE(req) {
@@ -100,13 +92,13 @@ export async function DELETE(req) {
     }
 
     await classesCollection.deleteOne({ _id: new ObjectId(id) });
+
     return NextResponse.json({ message: "Class deleted successfully" });
   } catch (error) {
-    console.error("Error deleting class:", error);
+    console.error("Error deleting class:", error.message);
     return NextResponse.json(
       { error: "Failed to delete class", details: error.message },
       { status: 500 }
     );
   }
 }
-
