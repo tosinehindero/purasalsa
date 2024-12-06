@@ -1,7 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation"; // Import useRouter from Next.js
 
 const ContactForm = () => {
+  const router = useRouter(); // Initialize the router
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -14,20 +16,18 @@ const ContactForm = () => {
 
   // Prefill the message with class details from query parameters
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const title = params.get("title");
-    const description = params.get("description");
-    const duration = params.get("duration");
+    const { searchParams } = new URL(window.location.href);
+    const title = searchParams.get("title");
+    const description = searchParams.get("description");
+    const duration = searchParams.get("duration");
 
     if (title || description || duration) {
       setFormData((prevData) => ({
         ...prevData,
-        message: `Class Title: ${title || ""}\nDescription: ${
-          description || ""
-        }\nDuration: ${duration || ""}\n\nPlease provide additional details or questions here.`,
+        message: `Class Title: ${title || ""}\nDescription: ${description || ""}\nDuration: ${duration || ""}\n\nPlease provide additional details or questions here.`,
       }));
     }
-  }, []);
+  }, [router]); // Add router dependency to ensure effect runs when router changes
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -78,13 +78,20 @@ const ContactForm = () => {
         </h2>
 
         {status && (
-          <p className={`text-center text-sm ${status.includes("successfully") ? "text-green-500" : "text-red-500"}`}>
+          <p
+            className={`text-center text-sm ${
+              status.includes("successfully") ? "text-green-500" : "text-red-500"
+            }`}
+          >
             {status}
           </p>
         )}
 
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-700"
+          >
             Name
           </label>
           <input
@@ -99,7 +106,10 @@ const ContactForm = () => {
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700"
+          >
             Email
           </label>
           <input
@@ -114,7 +124,10 @@ const ContactForm = () => {
         </div>
 
         <div>
-          <label htmlFor="subject" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="subject"
+            className="block text-sm font-medium text-gray-700"
+          >
             Subject
           </label>
           <input
@@ -129,7 +142,10 @@ const ContactForm = () => {
         </div>
 
         <div>
-          <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="message"
+            className="block text-sm font-medium text-gray-700"
+          >
             Message
           </label>
           <textarea
