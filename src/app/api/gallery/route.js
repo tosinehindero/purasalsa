@@ -8,7 +8,7 @@ const S3_BUCKET = process.env.NEXT_PUBLIC_S3_BUCKET;
 const REGION = process.env.AWS_REGION;
 
 if (!S3_BUCKET) {
-   throw new Error("Environment variable S3_BUCKET must be defined.");
+   throw new Error("Environment variable NEXT_PUBLIC_S3_BUCKET must be defined.");
 }
 
 // Fetch all images
