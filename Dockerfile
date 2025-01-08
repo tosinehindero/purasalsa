@@ -4,6 +4,16 @@ FROM node:18
 # Set the working directory in the container
 WORKDIR /app
 
+# Declare build arguments
+ARG AWS_REGION
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
+
+# Convert them to environment variables inside the container
+ENV AWS_REGION=$AWS_REGION
+ENV AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+ENV AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+
 # Copy package.json and package-lock.json first to leverage Docker's caching
 COPY package*.json ./
 
