@@ -1,0 +1,52 @@
+name: Pura-Docker CI/CD
+
+on:
+  # Trigger on push to main branch
+  push:
+    branches:
+      - main
+  # Trigger on pull requests targeting main branch
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:    
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Log in to Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Build Docker image
+      - name: Build Docker image
+        run: docker build -t hoya0424/myapp:latest .
+
+      # Push Docker image to Docker Hub
+      - name: Push Docker image
+        if: github.event_name == 'push' # Only push images on push events, not PR
+        run: docker push hoya0424/myapp:latest
+
+      # SSH into EC2 and deploy (only on push, not on PR)
+      - name: Deploy to EC2
+        if: github.event_name == 'push'
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            docker pull hoya0424/myapp:latest
+            docker stop myapp || true
+            docker rm myapp || true
+            docker run -d -p 80:3000 --env-file /home/ec2-user/purasalsasite/.env myapp:latest
+
