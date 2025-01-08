@@ -1,20 +1,14 @@
 name: Pura-Docker CI/CD
 
 on:
-  # Trigger on push to main branch
-  push:
-    branches:
-      - main
   # Trigger on pull requests targeting main branch
   pull_request:
     branches:
       - main
-  workflow_dispatch:    
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       # Checkout code
       - name: Checkout code
@@ -30,20 +24,21 @@ jobs:
       # Build Docker image
       - name: Build Docker image
         run: |
-            docker build \
-              --build-arg AWS_REGION=${{ secrets.AWS_REGION }} \
-              --build-arg AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
-              --build-arg AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
-              -t hoya0424/myapp:latest .
+          docker build \
+            --build-arg MONGO_URI=${{ secrets.MONGO_URI }} \
+            --build-arg AWS_REGION=${{ secrets.AWS_REGION }} \
+            --build-arg AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
+            --build-arg AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
+            -t hoya0424/myapp:latest .
 
       # Push Docker image to Docker Hub
+      # If you want to skip pushing on PR, remove or comment out this step
       - name: Push Docker image
-        if: github.event_name == 'push' # Only push images on push events, not PR
         run: docker push hoya0424/myapp:latest
 
-      # SSH into EC2 and deploy (only on push, not on PR)
+      # SSH into EC2 and deploy
+      # If you do NOT want to deploy on PR, remove this step or comment it out
       - name: Deploy to EC2
-        if: github.event_name == 'push'
         uses: appleboy/ssh-action@v0.1.5
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -53,5 +48,6 @@ jobs:
             docker pull hoya0424/myapp:latest
             docker stop myapp || true
             docker rm myapp || true
-            docker run -d -p 80:3000 --env-file /home/ec2-user/purasalsasite/.env myapp:latest
+            docker run -d -p 80:3000 --env-file /home/ec2-user/purasalsasite/.env hoya0424/myapp:latest
+
 
