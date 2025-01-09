@@ -108,7 +108,7 @@ const SectionReviews = () => {
                         className="rounded-full ring-green-300"
                      />
                      <div className="text-sm">
-                        <h4 className="opacity-90">Leyin Ehindero</h4>
+                        <h4 className="opacity-90">Josiah Ehindero</h4>
                         <p className="opacity-50">verified client</p>
                      </div>
                   </div>
