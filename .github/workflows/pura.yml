@@ -31,7 +31,7 @@ jobs:
             --build-arg AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
             --build-arg NEXT_PUBLIC_S3_BUCKET=${{ secrets.NEXT_PUBLIC_S3_BUCKET}} \
             --build-arg NEXT_PUBLIC_S3_BASE_URL=${{ secrets.NEXT_PUBLIC_S3_BASE_URL }} \
-            -t hoya0424/myapp:latest .
+            -t hoyah0424/myapp:latest .
 
       # Push Docker image to Docker Hub
       # If you want to skip pushing on PR, remove or comment out this step
