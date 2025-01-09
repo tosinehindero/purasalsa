@@ -47,9 +47,9 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_KEY }}
           script: |
-            docker pull hoya0424/myapp:latest
+            docker pull hoyah0424/myapp:latest
             docker stop myapp || true
             docker rm myapp || true
-            docker run -d -p 80:3000 --env-file /home/ec2-user/purasalsasite/.env hoya0424/myapp:latest
+            docker run -d -p 80:3000 --env-file /home/ec2-user/purasalsasite/.env hoyah0424/myapp:latest
 
 
