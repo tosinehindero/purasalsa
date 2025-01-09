@@ -140,7 +140,7 @@ const SectionReviews = () => {
                      consequuntur odit quam sapiente dicta vel magnam unde, rerum ut
                      quis. Deserunt quia harum expedita vero pariatur eius officia
                      quasi error, fugit quibusdam nostrum cum nulla repellat qui
-                     facilis cumque sint saepe.
+                     facilis cumque saepe.
                   </p>
                </div>
             </div>
