@@ -36,7 +36,7 @@ jobs:
       # Push Docker image to Docker Hub
       # If you want to skip pushing on PR, remove or comment out this step
       - name: Push Docker image
-        run: docker push hoya0424/myapp:latest
+        run: docker push hoyah0424/myapp:latest
 
       # SSH into EC2 and deploy
       # If you do NOT want to deploy on PR, remove this step or comment it out
