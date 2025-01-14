@@ -1,0 +1,36 @@
+name: Cleanup Old Docker Tags
+
+on:
+  schedule:
+    - cron: '0 0 * * SUN' # Runs every Sunday at midnight UTC
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      # Log in to Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # List and Delete Old Tags
+      - name: List and Delete Old Tags
+        run: |
+          IMAGE=hoyah0424/myapp
+          # Fetch all tags except 'latest'
+          TAGS=$(curl -s "https://hub.docker.com/v2/repositories/${IMAGE}/tags?page_size=1000" | jq -r '.results[].name' | grep -v '^latest$')
+
+          for TAG in $TAGS; do
+            # Check if the tag is older than 30 days
+            TAG_DATE=$(curl -s "https://hub.docker.com/v2/repositories/${IMAGE}/tags/${TAG}/" | jq -r '.last_updated')
+            TAG_TIMESTAMP=$(date -d "$TAG_DATE" +%s)
+            THIRTY_DAYS_AGO=$(date -d '30 days ago' +%s)
+
+            if [ "$TAG_TIMESTAMP" -lt "$THIRTY_DAYS_AGO" ]; then
+              echo "Deleting tag: $TAG"
+              # Delete the tag via Docker Hub API
+              curl -X DELETE -u "${{ secrets.DOCKER_USERNAME }}:${{ secrets.DOCKER_PASSWORD }}" "https://hub.docker.com/v2/repositories/${IMAGE}/tags/${TAG}/"
+            fi
+          done
