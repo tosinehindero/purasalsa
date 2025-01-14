@@ -129,7 +129,7 @@ const SectionReviews = () => {
                         className="rounded-full ring-2 ring-green-300"
                      />
                      <div className="text-sm">
-                        <h4 className="opacity-95">malachi Ehindero</h4>
+                        <h4 className="opacity-95">Ayomisiku Ehindero</h4>
                         <p className="opacity-60">verified client</p>
                      </div>
                   </div>

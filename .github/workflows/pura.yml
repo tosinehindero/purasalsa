@@ -1,8 +1,8 @@
 name: Pura-Docker CI/CD
 
 on:
-  # Trigger on pull requests targeting main branch
-  pull_request:
+  # Trigger on push main branch
+  push:
     branches:
       - main
 
@@ -21,6 +21,18 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      # Determine version
+      - name: Determine Version
+        id: vars
+        run: |
+          if git describe --tags --abbrev=0 > /dev/null 2>&1; then
+            VERSION=$(git describe --tags --abbrev=0)
+          else
+            VERSION=latest
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+      
+
       # Build Docker image
       - name: Build Docker image
         run: |
@@ -31,12 +43,16 @@ jobs:
             --build-arg AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
             --build-arg NEXT_PUBLIC_S3_BUCKET=${{ secrets.NEXT_PUBLIC_S3_BUCKET}} \
             --build-arg NEXT_PUBLIC_S3_BASE_URL=${{ secrets.NEXT_PUBLIC_S3_BASE_URL }} \
-            -t hoyah0424/myapp:test-update .
+            -t hoyah0424/myapp:${{ steps.vars.outputs.VERSION }} \
+            -t hoyah0424/myapp:latest \
+            .
 
+            
       # Push Docker image to Docker Hub
       # If you want to skip pushing on PR, remove or comment out this step
       - name: Push Docker image
-        run: docker push hoyah0424/myapp:test-update
+        run: docker push hoyah0424/myapp:${{ steps.vars.outputs.VERSION }}
+             docker push hoyah0424/myapp:latest
 
       # SSH into EC2 and deploy
       # If you do NOT want to deploy on PR, remove this step or comment it out
@@ -47,9 +63,9 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_KEY }}
           script: |
-            docker pull hoyah0424/myapp:test-update
+            docker pull hoyah0424/myapp:${{ steps.vars.outputs.VERSION }}
             docker stop myapp || true
             docker rm myapp || true
-            docker run -d --name myapp -p 80:3000 --env-file /home/ec2-user/purasalsasite/.env hoyah0424/myapp:test-update
+            docker run -d --name myapp -p 80:3000 --env-file /home/ec2-user/purasalsasite/.env hoyah0424/myapp:${{ steps.vars.outputs.VERSION }}
 
 
