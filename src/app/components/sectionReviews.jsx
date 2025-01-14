@@ -115,7 +115,7 @@ const SectionReviews = () => {
                   <p className="mt-6 text-xl">
                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis ad
                      aliquid commodi perferendis quas soluta exercitationem labore! Ea,
-                     non quaerat?
+                     non quaerat? this is a deploy test
                   </p>
                </div>
                <div className="p-10 rounded-xl bg-orange-500 border-2 text-white md:hidden">
