@@ -68,6 +68,6 @@ jobs:
             docker pull hoyah0424/myapp:${{ steps.vars.outputs.VERSION }}
             docker stop myapp || true
             docker rm myapp || true
-            docker run -d --name myapp -p 80:3000 --env-file /home/ec2-user/purasalsasite/.env hoyah0424/myapp:${{ steps.vars.outputs.VERSION }}
+            docker run -d --name myapp -p 80:3000 --env-file /home/ec2-user/purasalsasite/.env --env NEXTAUTH_SECRET=txRAwm8aJrrIvDN/OUnjvY0WmKP4RCy+YjpsQslae0M= hoyah0424/myapp:${{ steps.vars.outputs.VERSION }}
 
 
