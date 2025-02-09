@@ -1,15 +1,17 @@
 // src/app/api/auth/signup/route.js
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-
-let users = []; // Mock user database (for demonstration purposes)
+import connectMongoDB from "@@/app/utils/mongo";
 
 export async function POST(request) {
   try {
     const { username, password, role } = await request.json();
+    
+    // Connect to MongoDB and get the 'admins' collection
+    const adminsCollection = await connectMongoDB("admin", "admins");
 
     // Check if user already exists
-    const existingUser = users.find((user) => user.username === username);
+    const existingUser = await adminsCollection.findOne({ username });
     if (existingUser) {
       return NextResponse.json(
         { message: "User already exists" },
@@ -20,15 +22,16 @@ export async function POST(request) {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create new user
+    // Create new admin user document
     const newUser = { username, password: hashedPassword, role };
-    users.push(newUser); // Add user to the mock database
+    await adminsCollection.insertOne(newUser);
 
     return NextResponse.json(
       { message: "Admin user created successfully" },
       { status: 201 }
     );
   } catch (error) {
+    console.error("Signup error:", error);
     return NextResponse.json(
       { message: "Signup error. Please try again." },
       { status: 500 }

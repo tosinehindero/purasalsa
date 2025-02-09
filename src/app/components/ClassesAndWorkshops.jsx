@@ -1,4 +1,6 @@
 // ClassesAndWorkshops.jsx form
+
+
 import { useState, useEffect } from "react";
 
 function ClassesAndWorkshops() {
@@ -11,9 +13,14 @@ function ClassesAndWorkshops() {
   }, []);
 
   const fetchClasses = async () => {
-    const res = await fetch("/api/classes");
-    const data = await res.json();
-    setClasses(data);
+    try {
+      const res = await fetch("/api/classes");
+      const data = await res.json();
+      setClasses(data);
+    } catch (error) {
+      console.error("Error fetching classes:", error);
+      setClasses([]); // fallback to empty array on error
+    }
   };
 
   const handleImageUpload = (e) => {
@@ -29,25 +36,34 @@ function ClassesAndWorkshops() {
     formDataObj.append("duration", formData.duration);
     formDataObj.append("image", image);
 
-    const res = await fetch("/api/classes", {
-      method: "POST",
-      body: formDataObj,
-    });
-
-    if (res.ok) {
-      fetchClasses(); // Refresh class list
+    try {
+      const res = await fetch("/api/classes", {
+        method: "POST",
+        body: formDataObj,
+      });
+      if (res.ok) {
+        fetchClasses(); // Refresh class list after successful submission
+      }
+    } catch (error) {
+      console.error("Error submitting class:", error);
     }
   };
 
   const handleDelete = async (id) => {
-    await fetch("/api/classes", {
-      method: "DELETE",
-      body: JSON.stringify({ id }),
-      headers: { "Content-Type": "application/json" },
-    });
-
-    fetchClasses(); // Refresh class list
+    try {
+      await fetch("/api/classes", {
+        method: "DELETE",
+        body: JSON.stringify({ id }),
+        headers: { "Content-Type": "application/json" },
+      });
+      fetchClasses(); // Refresh class list after deletion
+    } catch (error) {
+      console.error("Error deleting class:", error);
+    }
   };
+
+  // Use safeClasses to ensure classes is always an array
+  const safeClasses = Array.isArray(classes) ? classes : [];
 
   return (
     <section className="text-gray-400 bg-white p-6 rounded-lg shadow-md">
@@ -87,7 +103,7 @@ function ClassesAndWorkshops() {
 
       {/* Display Classes */}
       <ul className="mt-6 space-y-4">
-        {classes.map((classItem) => (
+        {safeClasses.map((classItem) => (
           <li
             key={classItem._id}
             className="p-4 border rounded flex justify-between items-center"
